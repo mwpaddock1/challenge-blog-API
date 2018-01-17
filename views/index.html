@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to HyperDev!</title>
+    <meta name="description" content="Blog Challenge">
+    <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>All the Blogs</h1>
+      </header>
+      <main>
+        <section>
+          <ul class="blog-post js-blog-post">
+          </ul>
+        </section>
+        <hr>
+        <section>
+          <h2>Blogs</h2>
+          <form id="js-blog-form">
+            <div>
+              <label for="blog-title">Title</label>
+              <input type="text" name="blog-title" id="blog-title" placeholder="e.g., today's musings">
+              
+            </div>
+            <div>
+                <label for="blog-id">Blog ID</label>
+                <input type="text" name="blog-ID" id="blog-ID" placeholder="e.g., 123abcd456efg789hijk">
+                
+              </div>
+              <div>
+                <label for="blog-author">Author</label>
+                <input type="text" name="blog-author" id="blog-author" placeholder="e.g., William Faulkner">
+              </div>
+              <div>
+                <label for="blog-publishDate">Date Published</label>
+                <input type="text" name="blog-publishDate" id="blog-publishDate" placeholder="e.g., 01/01/2018">
+              </div>
+            <div>
+              <label for="blog-content">Blog</label>
+              <input type="text" name="blog-content" id="blog-content", placeholder="today, we went fishing...">
+            </div>
+            <button type="submit">Add blog</button>
+          </form>
+
+          <ul class="blogs js-blogs">
+          </ul>
+        </section>
+      </main>
+    </div>
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="/client.js"></script>
+  </body>
+</html>
