@@ -5,19 +5,21 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
 
-const {blog} = require('./models');
+const {
+  BlogPosts
+} = require('./models');
 
 // we're going to add some recipes to Recipes
 // so there's some data to look at
-Blog.create(
+BlogPosts.create(
   'initial blog', 'Dinner is relentless....', 'Mama Knows');
-Blog.create(
+BlogPosts.create(
   '2nd blog', 'If you have anything better to do, do not clean the house', 'Marion Best');
 
 // send back JSON representation of all blog
 // on GET requests to root
 router.get('/', (req, res) => {
-  res.json(Blog.get());
+  res.json(BlogPosts.get());
 });
 
 
@@ -27,7 +29,7 @@ router.get('/', (req, res) => {
 router.post('/', jsonParser, (req, res) => {
   // ensure `title', 'content', and `author` are in request body
   const requiredFields = ['title', 'content', 'author'];
-  for (let i=0; i<requiredFields.length; i++) {
+  for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
       const message = `Missing \`${field}\` in request body`
@@ -35,13 +37,13 @@ router.post('/', jsonParser, (req, res) => {
       return res.status(400).send(message);
     }
   }
-  const item = Blog.create(req.body.title, req.body.content, req.body.author);
+  const item = BlogPosts.create(req.body.title, req.body.content, req.body.author);
   res.status(201).json(item);
 });
 
 // Delete recipes (by id)!
 router.delete('/:id', (req, res) => {
-  Blog.delete(req.params.id);
+  BlogPosts.delete(req.params.id);
   console.log(`Deleted blog post \`${req.params.ID}\``);
   res.status(204).end();
 });
@@ -52,8 +54,8 @@ router.delete('/:id', (req, res) => {
 // of that, log error and send back status code 400. otherwise
 // call `Blog.updateItem` with updated blog.
 router.put('/:id', jsonParser, (req, res) => {
-  const requiredFields = ['title', 'content', 'author'];
-  for (let i=0; i<requiredFields.length; i++) {
+  const requiredFields = ['id', 'title', 'content', 'author', 'publishDate'];
+  for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
       const message = `Missing \`${field}\` in request body`
@@ -68,14 +70,23 @@ router.put('/:id', jsonParser, (req, res) => {
     console.error(message);
     return res.status(400).send(message);
   }
-  console.log(`Updating blog post \`${req.params.id}\``);
-  const updatedItem =Blog.update({
+  console.log(`Updating blog post with id\`${req.params.id}\``);
+  const updatedItem = Blog.update({
     id: req.params.id,
     title: req.body.title,
     content: req.body.content,
-    author: req.body.author
+    author: req.body.author,
+    publishDate: req.body.publishDate
   });
   res.status(204).end();
 })
+// add endpoint for DELETE requests. These requests should
+// have an id as a URL path variable and call
+// `BlogPosts.delete()`
+router.delete('/:id', (req, res) => {
+  BlogPosts.delete(req.params.id);
+  console.log(`Deleted blog post with id \`${req.params.ID}\``);
+  res.status(204).end();
+});
 
 module.exports = router;
