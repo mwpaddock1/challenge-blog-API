@@ -79,10 +79,10 @@
   function handleBlogAdd() {
     $('#js-blog-form').submit(function(e) {
       e.preventDefault();
-      var ingredients = $(
+      let contents = $(
         e.currentTarget).find(
-        '#ingredients-list').val().split(',').map(
-          function(contents) { return ingredient.trim() });
+        '#blog-content').val().split(',').map(
+          function(contents) { return content.trim() });
       addBlog({
         name: $(e.currentTarget).find('#blog-name').val(),
         content: content
