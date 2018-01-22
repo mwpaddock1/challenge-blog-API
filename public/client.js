@@ -1,109 +1,110 @@
-  
   let blogTemplate = (
     '<div class="blog js-blog">' +
-      '<h3 class="js-blog-title"><h3>' +
-      '<hr>' +
-      '<ul class="js-blog-content">' +
-      '</ul>' +
-      '<div class="blog-controls">' +
-        '<button class="js-blog-delete">' +
-          '<span class="button-label">delete</span>' +
-        '</button>' +
-      '</div>' +
+    '<h3 class="js-blog-title"><h3>' +
+    '<hr>' +
+    '<ul class="js-blog-content">' +
+    '</ul>' +
+    '<div class="blog-controls">' +
+    '<button class="js-blog-delete">' +
+    '<span class="button-label">delete</span>' +
+    '</button>' +
+    '</div>' +
     '</div>'
   );
-  
-  
-  let BLOGS_URL = '/blogs';
-  
-  
-  
+
+
+  let BLOGS_URL = '/blog-posts';
+
+
+
   function getAndDisplayBlogs() {
     console.log('Retrieving blogs')
-    $.getJSON(BLOGS_URL, function(blogs) {
+    $.getJSON(BLOGS_URL, function (blogs) {
       console.log('Rendering blogs');
-      let blogElement = blogs.map(function(blog) {
+      let blogElement = blogs.map(function (blog) {
         let element = $(blogTemplate);
         element.attr('id', blog.id);
-        element.find('.js-blog-title').text(blog.name);
-        blog.content.forEach(function(content) {
-          element.find('.js-blog-content').append(
-            '<li>' + content + '</li>');
-        });
+        element.find('#js-blog-title').text(blog.name);
+        console.log(blog);
+        element.find('#js-blog-content').append(
+          '<li>' + blog.content + '</li>');
         return element;
       });
-      $('.js-blogs').html(blogsElement)
+        $('.js-blogs').html(blogTemplate);
+             
     });
   }
-  
-  
+
+
   function addBlog(blog) {
     console.log('Adding blog: ' + blog);
     $.ajax({
       method: 'POST',
       url: BLOGS_URL,
       data: JSON.stringify(blog),
-      success: function(data) {
+      success: function (data) {
         getAndDisplayBlogs();
       },
       dataType: 'json',
       contentType: 'application/json'
     });
   }
-  
-   
+
+
   function deleteBlog(blogId) {
-    console.log('Deleting blog `' + blogId + '`');
+    console.log('Deleting blog `' + blog.Id + '`');
     $.ajax({
-      url: BLOGS_URL + '/' + blogId,
+      url: BLOGS_URL + '/' + blog.Id,
       method: 'DELETE',
       success: getAndDisplayBlogs
     });
   }
-  
-  
-  
+
+
+
   function updateBlog(blog) {
     console.log('Updating blog `' + blog.id + '`');
     $.ajax({
       url: BLOGS_URL + '/' + blog.id,
       method: 'PUT',
       data: blog,
-      success: function(data) {
+      success: function (data) {
         getAndDisplayBlogs();
       }
     });
   }
-  
- 
+
+
   function handleBlogAdd() {
-    $('#js-blog-form').submit(function(e) {
+    $('#js-blog-form').submit(function (e) {
       e.preventDefault();
       let contents = $(
         e.currentTarget).find(
         '#blog-content').val().split(',').map(
-          function(contents) { return content.trim() });
+        function (contents) {
+          return contents.trim()
+        });
       addBlog({
         name: $(e.currentTarget).find('#blog-name').val(),
-        content: content
+        content: contents
       });
     });
   }
-  
-  
-  
+
+
+
   function handleBlogDelete() {
-    $('.js-blogs').on('click', '.js-blog-delete', function(e) {
+    $('.js-blogs').on('click', '.js-blog-delete', function (e) {
       e.preventDefault();
       deleteBlog(
         $(e.currentTarget).closest('.js-blog').attr('id'));
     });
   }
-  
-  
-  
-  
-  $(function() {
+
+
+
+
+  $(function () {
     getAndDisplayBlogs();
     handleBlogAdd();
     handleBlogDelete();

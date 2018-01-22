@@ -9,7 +9,7 @@ const {
   BlogPosts
 } = require('./models');
 
-// we're going to add some recipes to Recipes
+// we're going to add some blogs
 // so there's some data to look at
 BlogPosts.create(
   'initial blog', 'Dinner is relentless....', 'Mama Knows');

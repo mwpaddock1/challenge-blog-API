@@ -23,18 +23,21 @@
     margin: 0 auto;
   }
   
-  .shopping-list {
+  #js-blog-form {
     list-style: none;
     padding-left: 0;
+    background-color: aquamarine;
   }
   
-  .shopping-list > li {
+  .blog-posts > li {
     margin-bottom: 20px;
     border: 1px solid grey;
     padding: 20px;
   }
-  
-  .shopping-item {
+  .js-blogs{
+    color:red;
+  }
+  .blog {
     display: block;
     color: grey;
     font-style: italic;
