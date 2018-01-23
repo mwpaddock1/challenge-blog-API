@@ -1,9 +1,12 @@
   let blogTemplate = (
     '<div class="blog js-blog">' +
-    '<h3 class="js-blog-title"><h3>' +
+    '<h2 class="js-blog-title"><h2>' +
+    '<hr>' +
+    '<h3 class="js-blog-author"><h3>' +
     '<hr>' +
     '<ul class="js-blog-content">' +
     '</ul>' +
+    '<hr>' +
     '<div class="blog-controls">' +
     '<button class="js-blog-delete">' +
     '<span class="button-label">delete</span>' +
@@ -12,29 +15,30 @@
     '</div>'
   );
 
-
   let BLOGS_URL = '/blog-posts';
-
-
 
   function getAndDisplayBlogs() {
     console.log('Retrieving blogs')
     $.getJSON(BLOGS_URL, function (blogs) {
       console.log('Rendering blogs');
-      let blogElement = blogs.map(function (blog) {
+      let blogElements = blogs.map(function (blog) {
         let element = $(blogTemplate);
         element.attr('id', blog.id);
-        element.find('#js-blog-title').text(blog.name);
+        element.find('.js-blog-title').text(blog.title);
         console.log(blog);
-        element.find('#js-blog-content').append(
-          '<li>' + blog.content + '</li>');
+        console.log(blog.title)
+        element.find('.js-blog-author').append(blog.author)
+        console.log(blog.author);
+         element.find('.js-blog-content').append(
+           blog.content);
+        console.log(blog.content) 
+      
         return element;
+        console.log(element);
       });
-        $('.js-blogs').html(blogTemplate);
-             
+        $('.js-blogs').html(blogElements);
     });
   }
-
 
   function addBlog(blog) {
     console.log('Adding blog: ' + blog);
@@ -50,7 +54,6 @@
     });
   }
 
-
   function deleteBlog(blogId) {
     console.log('Deleting blog `' + blog.Id + '`');
     $.ajax({
@@ -59,8 +62,6 @@
       success: getAndDisplayBlogs
     });
   }
-
-
 
   function updateBlog(blog) {
     console.log('Updating blog `' + blog.id + '`');
@@ -73,7 +74,6 @@
       }
     });
   }
-
 
   function handleBlogAdd() {
     $('#js-blog-form').submit(function (e) {
@@ -91,8 +91,6 @@
     });
   }
 
-
-
   function handleBlogDelete() {
     $('.js-blogs').on('click', '.js-blog-delete', function (e) {
       e.preventDefault();
@@ -101,11 +99,9 @@
     });
   }
 
-
-
-
   $(function () {
     getAndDisplayBlogs();
     handleBlogAdd();
     handleBlogDelete();
+    // updateBlog();
   });
