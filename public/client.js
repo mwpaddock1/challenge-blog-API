@@ -54,7 +54,7 @@
     });
   }
 
-  function deleteBlog(blogId) {
+  function deleteBlog(blog) {
     console.log('Deleting blog `' + blog.Id + '`');
     $.ajax({
       url: BLOGS_URL + '/' + blog.Id,

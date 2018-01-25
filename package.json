@@ -4,14 +4,30 @@
   "description": "create a blog page",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "mocha --exit"
   },
-  "author": "",
+  "author": "mwp",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "morgan": "^1.9.0",
     "uuid": "^3.2.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwpaddock1/challenge-blog-API.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "bugs": {
+    "url": "https://github.com/mwpaddock1/challenge-blog-API/issues"
+  },
+  "homepage": "https://github.com/mwpaddock1/challenge-blog-API#readme"
 }
