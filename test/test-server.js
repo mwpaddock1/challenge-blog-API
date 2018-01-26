@@ -1,4 +1,5 @@
 const chai = require('chai');
+
 const chaiHttp = require('chai-http');
 
 const {app, runServer, closeServer} = require('../server');
@@ -54,7 +55,7 @@ describe('Challenge Blog', function() {
         expect(res.body.length).to.be.at.least(1);
         // each item should be an object with key/value pairs
         // for `id`, `name` and `checked`.
-        const expectedKeys = ['title', 'author', 'content'];
+        const expectedKeys = ['title', 'author', 'content', 'publishDate'];
         res.body.forEach(function(item) {
           expect(item).to.be.a('object');
           expect(item).to.include.keys(expectedKeys);
@@ -67,7 +68,7 @@ describe('Challenge Blog', function() {
   //  2. inspect response object and prove it has right
   //  status code and that the returned object has an `id`
   it('should add an item on POST', function() {
-    const newItem = {name: 'coffee', checked: false};
+    const newItem = {title: 'coffee', author: 'mary B', content: 'had a little lamb', publishDate: '01.01.2019'};
     return chai.request(app)
       .post('/blog-posts')
       .send(newItem)
@@ -75,11 +76,14 @@ describe('Challenge Blog', function() {
         expect(res).to.have.status(201);
         expect(res).to.be.json;
         expect(res.body).to.be.a('object');
-        expect(res.body).to.include.keys('title', 'author', 'checked');
+        expect(res.body).to.include.keys('id', 'title', 'author', 'content', 'publishDate');
         expect(res.body.id).to.not.equal(null);
         // response should be deep equal to `newItem` from above if we assign
         // `id` to it from `res.body.id`
+        
         expect(res.body).to.deep.equal(Object.assign(newItem, {id: res.body.id}));
+        console.log(res.body);
+        console.log(Object.assign(newItem, {id: res.body.id}))
       });
   });
 
@@ -96,7 +100,7 @@ describe('Challenge Blog', function() {
     // request to the app, we update it with an `id` property so
     // we can make a second, PUT call to the app.
     const updateData = {
-      name: 'foo',
+      title: 'foo',
       checked: true
     };
 

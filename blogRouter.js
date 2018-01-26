@@ -12,9 +12,9 @@ const {
 // we're going to add some blogs
 // so there's some data to look at
 BlogPosts.create(
-  'initial blog', 'Dinner is relentless....', 'Mama Knows');
+  'initial blog', 'Dinner is relentless....', 'Mama Knows', '01.02.2100');
 BlogPosts.create(
-  '2nd blog', 'If you have anything better to do, do not clean the house', 'Marion Best');
+  '2nd blog', 'If you have anything better to do, do not clean the house', 'Marion Best', '02/02/2022');
 
 // send back JSON representation of all blog
 // on GET requests to root
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 // if okay, add new item, and return it with a status 201.
 router.post('/', jsonParser, (req, res) => {
   // ensure `title', 'content', and `author` are in request body
-  const requiredFields = ['title', 'content', 'author'];
+  const requiredFields = ['title', 'author', 'content', 'publishDate'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -37,7 +37,7 @@ router.post('/', jsonParser, (req, res) => {
       return res.status(400).send(message);
     }
   }
-  const item = BlogPosts.create(req.body.title, req.body.content, req.body.author);
+  const item = BlogPosts.create(req.body.title, req.body.author, req.body.content, req.body.publishDate);
   res.status(201).json(item);
 });
 
