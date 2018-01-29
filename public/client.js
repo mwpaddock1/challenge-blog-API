@@ -12,6 +12,9 @@
     '<button class="js-blog-delete">' +
     '<span class="button-label">delete</span>' +
     '</button>' +
+    '<button class="js-blog-update">' +
+    '<span class="button-label">update</span>' +
+    '</button>' +
     '</div>' +
     '</div>'
   );
@@ -105,5 +108,5 @@
     getAndDisplayBlogs();
     handleBlogAdd();
     handleBlogDelete();
-    // updateBlog();
+    updateBlog();
   });
