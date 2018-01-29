@@ -16,14 +16,15 @@ function StorageException(message) {
 }
 
 const BlogPosts = {
-  create: function(title, content, author, publishDate) {
-    const post = {
-      id: uuid.v4(),
+  create: function(title, author, content, publishDate) {
+    const post = {      
       title: title,
-      content: content,
       author: author,
-      publishDate: publishDate || Date.now()
+      content: content,      
+      publishDate: publishDate || Date.now(),
+      id: uuid.v4(),
     };
+   
     this.posts.push(post);
     return post;
   },

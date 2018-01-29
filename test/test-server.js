@@ -80,10 +80,10 @@ describe('Challenge Blog', function() {
         expect(res.body.id).to.not.equal(null);
         // response should be deep equal to `newItem` from above if we assign
         // `id` to it from `res.body.id`
-        
-        expect(res.body).to.deep.equal(Object.assign(newItem, {id: res.body.id}));
         console.log(res.body);
         console.log(Object.assign(newItem, {id: res.body.id}))
+        expect(res.body).to.deep.equal(Object.assign(newItem, {id: res.body.id}));
+       
       });
   });
 
@@ -101,7 +101,7 @@ describe('Challenge Blog', function() {
     // we can make a second, PUT call to the app.
     const updateData = {
       title: 'foo',
-      checked: true
+      author: 'sam smith'
     };
 
     return chai.request(app)

@@ -6,6 +6,7 @@
     '<hr>' +
     '<ul class="js-blog-content">' +
     '</ul>' +
+    `<h3 class='js-blog-publishDate'><h3>` +
     '<hr>' +
     '<div class="blog-controls">' +
     '<button class="js-blog-delete">' +
@@ -32,7 +33,8 @@
          element.find('.js-blog-content').append(
            blog.content);
         console.log(blog.content) 
-      
+        element.find('.js-blog-publishDate').append(
+          blog.publishDate);
         return element;
         console.log(element);
       });
