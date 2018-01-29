@@ -78,7 +78,7 @@ router.put('/:id', jsonParser, (req, res) => {
     author: req.body.author,
     publishDate: req.body.publishDate
   });
-  res.status(204).end();
+  res.status(200).send(updatedItem);
 })
 // add endpoint for DELETE requests. These requests should
 // have an id as a URL path variable and call

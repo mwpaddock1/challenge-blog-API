@@ -101,7 +101,9 @@ describe('Challenge Blog', function() {
     // we can make a second, PUT call to the app.
     const updateData = {
       title: 'foo',
-      author: 'sam smith'
+      author: 'sam smith',
+      content: 'foo bar is a typical example',
+      publishDate: '02/04/2017'
     };
 
     return chai.request(app)
