@@ -9,12 +9,7 @@ const {
   BlogPosts
 } = require('./models');
 
-// we're going to add some blogs
-// so there's some data to look at
-BlogPosts.create(
-  'initial blog', 'Dinner is relentless....', 'Mama Knows', '01.02.2100');
-BlogPosts.create(
-  '2nd blog', 'If you have anything better to do, do not clean the house', 'Marion Best', '02/02/2022');
+
 
 // send back JSON representation of all blog
 // on GET requests to root
@@ -22,39 +17,76 @@ router.get('/', (req, res) => {
   res.json(BlogPosts.get());
 });
 
+router.get('/', (req, res) => {
+  Blog
+    .find()
+    .limit(10)
+    .then(blogs => {
+      res.json({
+        blogs: blogs.map(
+          (blog) => blog.serialize())
+      });
 
-// when new blog added, ensure has required fields. if not,
-// log error and return 400 status code with hepful message.
-// if okay, add new item, and return it with a status 201.
-router.post('/', jsonParser, (req, res) => {
-  // ensure `title', 'content', and `author` are in request body
-  const requiredFields = ['title', 'author', 'content', 'publishDate'];
-  for (let i = 0; i < requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`
-      console.error(message);
-      return res.status(400).send(message);
+    });
+    app.get('/posts/:id', (req, res) => {
+      BlogPost
+        .findById(req.params.id)
+        .then(post => res.json(post.serialize()))
+        .catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'something went wrong awry' });
+        });
+    });
+    
+
+  // when new blog added, ensure has required fields. if not,
+  // log error and return 400 status code with hepful message.
+  // if okay, add new item, and return it with a status 201.
+  router.post('/', jsonParser, (req, res) => {
+    // ensure `title', 'content', and `author` are in request body
+    const requiredFields = ['title', 'author', 'content'];
+    for (let i = 0; i < requiredFields.length; i++) {
+      const field = requiredFields[i];
+      if (!(field in req.body)) {
+        const message = `Missing \`${field}\` in request body`
+        console.error(message);
+        return res.status(400).send(message);
+      }
     }
-  }
-  const item = BlogPosts.create(req.body.title, req.body.author, req.body.content, req.body.publishDate);
-  res.status(201).json(item);
+
+    BlogPost
+      .create({
+        title: req.body.title,
+        author: req.body.author,
+        content: req.body.content,
+        created: req.body.created
+      })
+      .then(restaurant => res.status(201).json(restaurant.serialize()))
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({
+          message: 'Internal server error'
+        });
+      });
+  });
 });
 
 // Delete blogs (by id)!
-router.delete('/:id', (req, res) => {
-  BlogPosts.delete(req.params.id);
-  console.log(`Deleted blog post \`${req.params.ID}\``);
-  res.status(204).end();
+router.delete('BlogPosts/:id', (req, res) => {
+  BlogPost
+  .findByIdAndRemove(req.params.id)
+  .then(BlogPost => res.status(204).end())
+  .catch(err => res.status(500).json({
+    messge: 'Internal server error'
+  }));
 });
-
 // when PUT request comes in with updated blog, ensure has
 // required fields. also ensure that blog id in url path, and
 // blog id in updated item object match. if problems with any
 // of that, log error and send back status code 400. otherwise
 // call `Blog.updateItem` with updated blog.
 router.put('/:id', jsonParser, (req, res) => {
-  const requiredFields = ['title', 'author', 'content', 'publishDate'];
+  const requiredFields = ['title', 'author', 'content'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -76,7 +108,6 @@ router.put('/:id', jsonParser, (req, res) => {
     title: req.body.title,
     content: req.body.content,
     author: req.body.author,
-    publishDate: req.body.publishDate
   });
   res.status(200).send(updatedItem);
 })

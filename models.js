@@ -1,71 +1,42 @@
 const uuid = require('uuid');
 
-// This module provides volatile storage, using a `BlogPost`
-// model. We haven't learned about databases yet, so for now
-// we're using in-memory storage. This means each time the app stops, our storage
-// gets erased.
+'use strict';
 
-// Don't worry too much about how BlogPost is implemented.
-// Our concern in this example is with how the API layer
-// is implemented, and getting it to use an existing model.
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
+const blogpostsSchema = mongoose.Schema({
+  title: {type: String, required: true},
+  author: [{
+    firstName: String,
+    lastName: String
+  }],
+  content: {type: String, required: true},
+  created: {type: Data, default: Date.now}
 
-function StorageException(message) {
-   this.message = message;
-   this.name = "StorageException";
+})
+// *virtuals* (http://mongoosejs.com/docs/guide.html#virtuals)
+// allow us to define properties on our object that manipulate
+// properties that are stored in the database. Here we use it
+// to generate a human readable string based on the author object
+// we're storing in Mongo.
+
+blogpostsSchema.virtual('authorNameString').get(function() {
+  return `${this.author.firstName} ${this.author.lastName}`.trim()});
+
+blogpostsSchema.methods.serialize = function() {
+  return {
+    id: this._id,
+    title: this.title,
+    author: this.authorNameString,
+    created: this.created 
+  };
 }
 
-const BlogPosts = {
-  create: function(title, author, content, publishDate) {
-    const post = {      
-      title: title,
-      author: author,
-      content: content,      
-      publishDate: publishDate || Date.now(),
-      id: uuid.v4(),
-    };
+const BlogPost = mongoose.model('Blog', blogpostsSchema);
+
+module.exports = {BlogPost};
+  
+  
    
-    this.posts.push(post);
-    return post;
-  },
-  get: function(id=null) {
-    // if id passed in, retrieve single post,
-    // otherwise send all posts.
-    if (id !== null) {
-      return this.posts.find(post => post.id === id);
-    }
-    // return posts sorted (descending) by
-    // publish date
-    return this.posts.sort(function(a, b) {
-      return b.publishDate - a.publishDate
-    });
-  },
-  delete: function(id) {
-    const postIndex = this.posts.findIndex(
-      post => post.id === id);
-    if (postIndex > -1) {
-      this.posts.splice(postIndex, 1);
-    }
-  },
-  update: function(updatedPost) {
-    const {id} = updatedPost;
-    const postIndex = this.posts.findIndex(
-      post => post.id === updatedPost.id);
-    if (postIndex === -1) {
-      throw new StorageException(
-        `Can't update item \`${id}\` because doesn't exist.`)
-    }
-    this.posts[postIndex] = Object.assign(
-      this.posts[postIndex], updatedPost);
-    return this.posts[postIndex];
-  }
-};
-
-function createBlogPostsModel() {
-  const storage = Object.create(BlogPosts);
-  storage.posts = [];
-  return storage;
-}
-
-
-module.exports = {BlogPosts: createBlogPostsModel()};
+  
