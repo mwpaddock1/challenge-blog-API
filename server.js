@@ -4,14 +4,14 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
 
+
+const {
+  BlogPost
+} = require('./models');
 const {
   PORT,
   DATABASE_URL
 } = require('./config');
-const {
-  BlogPost
-} = require('./models');
-
 const app = express();
 
 const blogRouter = require('./blogRouter');

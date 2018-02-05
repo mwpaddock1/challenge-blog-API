@@ -3,7 +3,10 @@ const router = express.Router();
 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-
+const {
+  PORT,
+  DATABASE_URL
+} = require('./config');
 
 const {
   BlogPosts
