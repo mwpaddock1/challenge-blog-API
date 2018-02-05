@@ -12,7 +12,7 @@ const blogpostsSchema = mongoose.Schema({
     lastName: String
   }],
   content: {type: String, required: true},
-  created: {type: Data, default: Date.now}
+  created: {type: Date, default: Date.now}
 
 })
 // *virtuals* (http://mongoosejs.com/docs/guide.html#virtuals)
