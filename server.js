@@ -3,7 +3,7 @@ const morgan = require('morgan');
 
 const app = express();
 
-const blogRouter = require('./blogRouter');
+const blogRouter = require('./blogRouter.js');
 
 
 // log the http layer
